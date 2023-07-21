@@ -14,7 +14,7 @@ type Props = {
 const CardItem = ({ px, style, ...user }: Props) => {
   const navigation = useNavigation<any>();
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("NannyDetail")} delayPressIn={125} activeOpacity={0.5}>
+    <TouchableOpacity onPress={() => navigation.navigate("NannyDetail")} delayPressIn={50} activeOpacity={0.6}>
       <VStack style={[styles.container, style]} rounded="lg" px={px}>
         <UserSummary user={user} />
         <Text fontSize="md" color="muted.500" textTransform="capitalize">

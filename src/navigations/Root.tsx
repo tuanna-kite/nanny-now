@@ -19,6 +19,7 @@ const Stack = createStackNavigator<RootStackParams>();
 const Root = () => {
   const { user } = useAppSelector((state) => state.user);
   const { colors } = useTheme();
+  
   return (
     <>
       <StatusBar style="dark" />

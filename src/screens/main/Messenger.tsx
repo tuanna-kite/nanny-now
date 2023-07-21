@@ -1,6 +1,16 @@
 import { StyleSheet } from "react-native";
 import React from "react";
-import { Button, VStack, useTheme, Text } from "native-base";
+import {
+  Button,
+  VStack,
+  useTheme,
+  Text,
+  Heading,
+  Divider,
+  HStack,
+  Input,
+  Stack,
+} from "native-base";
 import { SearchNormal } from "iconsax-react-native";
 import MessageItem from "../../components/ListMassages/MessageItem";
 import ListMassages from "../../components/ListMassages/ListMassages";
@@ -11,18 +21,26 @@ const Messenger = () => {
   const { colors } = useTheme();
   return (
     <>
-      <StatusBar style="dark" />
-      <VStack safeAreaTop flex={1} bg="white" px="4" space="6" pt="4">
-        <Button
-          size="lg"
-          rounded="lg"
-          colorScheme="button"
-          leftIcon={<SearchNormal color={colors.muted[400]} />}
-          onPress={() => {}}
-        >
-          <Text color="muted.400">Tìm kiếm theo khu vực</Text>
-        </Button>
-        <ListMassages data={MESSAGES} />
+      <StatusBar style="light" />
+      <VStack flex={1} bg="white">
+        <VStack space="2" px="4" py="4" bg="primary.600" safeAreaTop>
+          <HStack>
+            <Input
+              backgroundColor="white"
+              _stack={{ px: "3" }}
+              size="lg"
+              h="10"
+              rounded="lg"
+              variant="unstyled"
+              flex={1}
+              placeholder="Tìm kiếm"
+              InputLeftElement={<SearchNormal color={colors.muted[400]} />}
+            />
+          </HStack>
+        </VStack>
+        <VStack px="5" flex={1}>
+          <ListMassages data={MESSAGES} />
+        </VStack>
       </VStack>
     </>
   );

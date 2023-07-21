@@ -1,9 +1,11 @@
 import { StyleSheet } from "react-native";
 import React from "react";
-import { Avatar, HStack, VStack, Text, useTheme } from "native-base";
+import { HStack, VStack, Text, useTheme } from "native-base";
 import { Location } from "iconsax-react-native";
 import { UserProfile } from "../types/user";
 import Rating from "./Rating";
+import { Image } from "expo-image";
+import Avatar from "./Avatar";
 
 type Props = {
   user: UserProfile;
@@ -16,12 +18,7 @@ const UserSummary = ({ user, size = "md" }: Props) => {
   return (
     <HStack>
       <HStack flex={1} space="2">
-        <Avatar
-          source={require("../../assets/Avatar.png")}
-          w={size === "md" ? null : 20}
-          h={size === "md" ? null : 20}
-          size="lg"
-        />
+        <Avatar source={require("../../assets/Avatar.png")} />
         <VStack flex={1} justifyContent="space-between">
           <Text
             style={[styles.text, styles.fullname]}

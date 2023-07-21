@@ -1,8 +1,9 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Avatar, HStack, VStack, Text, useTheme } from "native-base";
+import { HStack, VStack, Text, useTheme } from "native-base";
 import { Clock } from "iconsax-react-native";
 import { NotificationItemProps } from "../../types/notification";
+import Avatar from "../Avatar";
 
 type Props = { mt?: any } & NotificationItemProps;
 
@@ -11,7 +12,7 @@ const NotificationItem = ({ fromUser, mt }: Props) => {
   return (
     <TouchableOpacity>
       <HStack space="2" mt={mt}>
-        <Avatar w="20" h="20" source={require("../../../assets/Avatar.png")} />
+        <Avatar source={require("../../../assets/Avatar.png")} />
         <VStack flex={1} justifyContent="space-between">
           <Text fontSize={16} color="muted.800">
             <Text textTransform="capitalize" fontWeight="semibold" color="primary.600">

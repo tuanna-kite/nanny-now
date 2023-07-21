@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
-import { Avatar, HStack, IconButton, Input, ScrollView, Text, VStack, useTheme } from "native-base";
+import { HStack, IconButton, Input, ScrollView, Text, VStack, useTheme } from "native-base";
 import {
   ArrowLeft2,
   ToggleOnCircle,
@@ -11,6 +11,7 @@ import {
 } from "iconsax-react-native";
 import ChatItem, { EChatType } from "../components/ChatItem";
 import { useNavigation } from "@react-navigation/native";
+import Avatar from "../components/Avatar";
 
 const Chat = () => {
   const { colors } = useTheme();
@@ -22,7 +23,7 @@ const Chat = () => {
           <ArrowLeft2 color={colors.muted[800]} />
         </TouchableOpacity>
 
-        <Avatar size="md" source={require("../../assets/Avatar.png")} />
+        <Avatar size="sm" source={require("../../assets/Avatar.png")} />
         <VStack>
           <Text color="muted.800" fontWeight="bold" fontSize="md">
             Miracle Dorwart

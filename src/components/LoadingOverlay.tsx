@@ -1,15 +1,16 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import React from "react";
-import { Center, HStack, Heading, Spinner } from "native-base";
+import { Center, HStack, Heading, Spinner, Stack } from "native-base";
 
 const LoadingOverlay = () => {
   return (
-    <Center flex={1} style={styles.container}>
+    <Center flex={1} style={styles.container} bg="white">
+      {/* <Stack position="absolute" width="100%" height="100%" backgroundColor="black" opacity={0.1} zIndex={0} /> */}
       <HStack space={2} justifyContent="center">
-        <Spinner accessibilityLabel="Loading posts" />
-        <Heading color="primary.500" fontSize="md">
+        <Spinner size="lg" accessibilityLabel="Loading posts" />
+        {/* <Heading color="primary.600" fontSize="lg">
           Loading
-        </Heading>
+        </Heading> */}
       </HStack>
     </Center>
   );
@@ -19,10 +20,7 @@ export default LoadingOverlay;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "rgba(0,0,0,0.15)",
-    position: "absolute",
-    zIndex: 1,
-    width: "100%",
-    height: "100%"
+    width: Dimensions.get("screen").width,
+    height: Dimensions.get("screen").height,
   },
 });

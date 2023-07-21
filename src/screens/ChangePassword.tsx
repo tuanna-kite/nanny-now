@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import React from "react";
 import { Button, FormControl, Input, Stack, VStack, WarningOutlineIcon } from "native-base";
 
 const ChangePassword = () => {
   return (
-    <VStack flex={1} bg="white" safeAreaBottom px="5">
-      <VStack flex={1} justifyContent="center" space="3">
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <VStack space="3" flex={1} bg="white" px="5" pt="16" safeAreaBottom>
         <FormControl>
-          <Stack mx="4">
+          <Stack mx="2">
             <FormControl.Label>Mật khẩu hiện tại</FormControl.Label>
             <Input
               type="password"
@@ -19,7 +19,7 @@ const ChangePassword = () => {
           </Stack>
         </FormControl>
         <FormControl>
-          <Stack mx="4">
+          <Stack mx="2">
             <FormControl.Label>Mât khẩu mới</FormControl.Label>
             <Input
               type="password"
@@ -31,7 +31,7 @@ const ChangePassword = () => {
           </Stack>
         </FormControl>
         <FormControl>
-          <Stack mx="4">
+          <Stack mx="2">
             <FormControl.Label>Nhập lại mật khẩu</FormControl.Label>
             <Input
               variant="outline"
@@ -42,13 +42,13 @@ const ChangePassword = () => {
             />
           </Stack>
         </FormControl>
+        <Stack px="2" pt="3">
+          <Button rounded="lg" size="lg">
+            Cập nhật mật khẩu
+          </Button>
+        </Stack>
       </VStack>
-      <Stack py="4">
-        <Button rounded="lg" size="lg">
-          Cập nhật mật khẩu
-        </Button>
-      </Stack>
-    </VStack>
+    </TouchableWithoutFeedback>
   );
 };
 

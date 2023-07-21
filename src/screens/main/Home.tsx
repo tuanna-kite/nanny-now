@@ -1,13 +1,25 @@
 import { Animated, StyleSheet } from "react-native";
-import React, { useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { HStack, ScrollView, Stack, StatusBar, Text, VStack, useTheme } from "native-base";
 import ListProfile from "../../components/ListProfile/ListProfile";
 import PopupFilterOverlay from "../../components/PopupFilterOverlay";
 import HomeHeader from "../../components/HomeHeader";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { removeLoading } from "../../store/loading.reducer";
+import LoadingOverlay from "../../components/LoadingOverlay";
 
 const Home = () => {
   const { colors } = useTheme();
+  const dispatch = useAppDispatch();
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
+  const { isLoading } = useAppSelector((state) => state.loading);
+  console.log(isLoading);
+
+  useEffect(() => {
+    setTimeout(() => dispatch(removeLoading()), 50);
+  }, []);
+  if (isLoading) return <LoadingOverlay />;
+
   return (
     <>
       <StatusBar barStyle="light-content" />

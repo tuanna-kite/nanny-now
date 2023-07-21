@@ -14,7 +14,7 @@ export type RootStackParams = {
   Auth?: undefined;
   TabNav?: undefined;
   NannyDetail: {};
-  ManageNanny: {};
-  Chat: {};
+  ManageNanny: undefined;
+  Chat: undefined;
   ChangePassword: {};
 };

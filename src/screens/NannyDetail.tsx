@@ -4,13 +4,19 @@ import { Heading, VStack, Text, Stack, ScrollView, useTheme, HStack, Button } fr
 import UserSummary from "../components/UserSummary";
 import NANNY from "../data/nanny";
 import ListComments from "../components/ListComments/ListComments";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Heart, MessageText1 } from "iconsax-react-native";
-import { HeaderButtonProps } from "@react-navigation/native-stack/lib/typescript/src/types";
+import {
+  HeaderButtonProps,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack/lib/typescript/src/types";
+import { RootStackParams } from "../navigations/config";
+
+type NavigationProps = NativeStackScreenProps<RootStackParams, "NannyDetail">;
 
 const NannyDetail = () => {
   const { colors } = useTheme();
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<NavigationProps["navigation"]>();
 
   useLayoutEffect(() => {
     navigation.setOptions({

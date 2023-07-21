@@ -3,19 +3,23 @@ import React from "react";
 import { Divider, HStack, Heading, Stack, VStack } from "native-base";
 import NANNY from "../../data/nanny";
 import NotificationList from "../../components/NotificationList/NotificationList";
+import { StatusBar } from "expo-status-bar";
 
 const Notification = () => {
   return (
-    <VStack flex={1} safeAreaTop bg="white" py="4">
-      <Heading color="primary.600" textAlign="center" pb="4" fontWeight="semibold">
-        Thông báo
-      </Heading>
+    <>
+      <StatusBar style="dark" />
+      <VStack flex={1} safeAreaTop bg="white" pt="3">
+        <Heading textAlign="center" pb="3" fontSize="xl" fontWeight="semibold">
+          Thông báo
+        </Heading>
 
-      <Divider />
-      <Stack px="4">
-        <NotificationList data={NANNY.map((user) => ({ fromUser: user }))} />
-      </Stack>
-    </VStack>
+        <Divider />
+        <Stack px="4">
+          <NotificationList data={NANNY.map((user) => ({ fromUser: user }))} />
+        </Stack>
+      </VStack>
+    </>
   );
 };
 

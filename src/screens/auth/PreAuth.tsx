@@ -1,8 +1,9 @@
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import { Button, HStack, StatusBar, VStack, useTheme } from "native-base";
 import { ArrowRight2 } from "iconsax-react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Image } from "expo-image";
 
 const PreAuth = () => {
   const { colors } = useTheme();
@@ -14,9 +15,8 @@ const PreAuth = () => {
     <>
       <StatusBar barStyle="light-content" />
       <VStack flex={1}>
-        <ImageBackground
+        <Image
           source={require("../../../assets/pre-auth.png")}
-          resizeMode="cover"
           style={{ flex: 1, justifyContent: "flex-end" }}
         >
           <HStack space={2} safeAreaBottom px="2" py="6">
@@ -33,7 +33,7 @@ const PreAuth = () => {
               Tôi là người trông trẻ
             </Button>
           </HStack>
-        </ImageBackground>
+        </Image>
       </VStack>
     </>
   );
