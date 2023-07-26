@@ -1,8 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-
+import { getFirestore } from "firebase/firestore";
+import { getStorage, ref } from "firebase/storage";
 // Initialize Firebase
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyBx9M6oNdeSFAaBZflihhzGbXb1O5m-QFk",
   authDomain: "react-native-practice-f525b.firebaseapp.com",
   databaseURL:
@@ -16,6 +17,8 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 export const firebaseAuth = getAuth(firebaseApp);
+export const firebaseDB = getFirestore(firebaseApp);
+export const firebaseStorage = getStorage(firebaseApp);
 export default firebaseApp;
 // For more information on how to access Firebase in your project,
 // see the Firebase documentation: https://firebase.google.com/docs/web/setup#access-firebase

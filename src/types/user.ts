@@ -5,16 +5,24 @@ export enum EUserRole {
 }
 export interface UserProfile<T = Nanny> {
   phone: string;
+  password?: string;
   profile: T;
   role: EUserRole;
 }
 
 export interface Nanny {
   fullname: string;
-  location: string;
+  address: string;
   experience: string;
   description: string;
   rate?: number;
   nRated?: number;
   price: number;
+}
+
+export interface Parrent {
+  fullname: string;
+  age: number;
+  avatar?: string;
+  address: string;
 }

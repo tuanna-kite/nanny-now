@@ -1,16 +1,6 @@
 import { StyleSheet } from "react-native";
 import React from "react";
-import {
-  Button,
-  VStack,
-  useTheme,
-  Text,
-  Heading,
-  Divider,
-  HStack,
-  Input,
-  Stack,
-} from "native-base";
+import { VStack, useTheme, HStack, Input } from "native-base";
 import { SearchNormal } from "iconsax-react-native";
 import MessageItem from "../../components/ListMassages/MessageItem";
 import ListMassages from "../../components/ListMassages/ListMassages";

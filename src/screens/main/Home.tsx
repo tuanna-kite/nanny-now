@@ -13,7 +13,6 @@ const Home = () => {
   const dispatch = useAppDispatch();
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
   const { isLoading } = useAppSelector((state) => state.loading);
-  console.log(isLoading);
 
   useEffect(() => {
     setTimeout(() => dispatch(removeLoading()), 50);

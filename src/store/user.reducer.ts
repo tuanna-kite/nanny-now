@@ -1,8 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { EUserRole, UserProfile } from "../types/user";
+import { EUserRole, Parrent, UserProfile } from "../types/user";
 
 type UserState = {
-  user: UserProfile | null;
+  user: UserProfile<Parrent> | null;
 };
 
 const initialState: UserState = {
@@ -13,8 +13,13 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, actions: PayloadAction<{ role: EUserRole }>) => {
-      state.user = { phone: "0337676999", role: actions.payload.role };
+    setUser: (state, actions: PayloadAction<UserProfile<Parrent>>) => {
+      // state.user = { ...actions.payload };
+      state.user = {
+        phone: "0337676999",
+        profile: { fullname: "Nguyen Anh Tuan", address: "Thach Ban, Long Bien, Ha Noi", age: 25 },
+        role: EUserRole.Parent,
+      };
     },
     removeUser: (state) => {
       state.user = null;

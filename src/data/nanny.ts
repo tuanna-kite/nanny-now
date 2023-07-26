@@ -8,7 +8,7 @@ function randomNany(): UserProfile {
       fullname: generateName(),
       description:
         generateName() + ", " + generateName() + ", " + generateName() + ", " + generateName(),
-      location: generateName(),
+      address: generateName(),
       experience: "5+",
       nRated: Math.floor(Math.random() * 1000)+ 100,
       rate: +(Math.random() * 3).toPrecision(2) + 2,

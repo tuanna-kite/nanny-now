@@ -1,59 +1,154 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import "firebase/auth";
+import { Keyboard, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import React, { useRef, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../navigations/config";
-import { useAppDispatch } from "../../store";
-import { setUser } from "../../store/user.reducer";
-import { Button, Center, Checkbox, Container, HStack, Image, Input, VStack } from "native-base";
-import { EUserRole } from "../../types/user";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { Button, Center, HStack, Input, VStack, Text } from "native-base";
+import Avatar from "../../components/Avatar";
+import { removeLoading, setLoading } from "../../store/loading.reducer";
+import { firebaseAuth, firebaseConfig, firebaseDB } from "../../firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { setPopup } from "../../store/popup.reducer";
+import { EPopupType, PopupMassage } from "../../types/popup";
+import { PhoneAuthProvider } from "firebase/auth";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import { onInputChange, signUpSchema } from "../../utils/form-utils";
+import { ValidationError } from "yup";
+import LoadingOverlay from "../../components/LoadingOverlay";
+import FormInput from "../../components/Form/FormInput";
 
 type Props = {} & NativeStackScreenProps<AuthStackParams, "SignUp">;
 
+type SignUpDataForm = {
+  phone: string;
+  password: string;
+  repassword: string;
+};
+
+function setSignupError(message: string): PopupMassage {
+  const errorTitle = "Đăng ký thất bại";
+  return {
+    type: EPopupType.ERROR,
+    title: errorTitle,
+    message,
+  };
+}
+
 const SignUp = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
+  const { isLoading } = useAppSelector((state) => state.loading);
+
+  const [dataForm, setDataForm] = useState<SignUpDataForm>({
+    phone: "0337676999",
+    password: "12345678",
+    repassword: "12345678",
+  });
+  const recaptchaVerifier = useRef(null);
 
   function onLoginBack() {
     navigation.navigate("Login");
   }
 
-  function onSignUp() {
-    // dispatch(setUser({ role: EUserRole.Nanny }));
+  async function onSignUp() {
+    // Loading
+    dispatch(setLoading());
+    // Validate
+    try {
+      await signUpSchema.validate(dataForm);
+    } catch (err) {
+      const { message } = err as ValidationError;
+      dispatch(setPopup(setSignupError(message)));
+      dispatch(removeLoading());
+      return;
+    }
+    // Check exist
+    const docRef = doc(firebaseDB, "users", dataForm.phone);
+    const docSnap = await getDoc(docRef);
+
+    // Move to OTP if didn't exist
+    if (docSnap.exists()) {
+      dispatch(removeLoading());
+      dispatch(
+        setPopup({
+          type: EPopupType.ERROR,
+          title: "Đăng ký thất bại!",
+          message: "Người dùng đã tồn tại.",
+        })
+      );
+      return;
+    }
+    try {
+      // const phoneProvider = new PhoneAuthProvider(firebaseAuth);
+      // const verificationId = await phoneProvider.verifyPhoneNumber(
+      //   dataForm.phone,
+      //   recaptchaVerifier.current!
+      // ); // get the verification id
+      dispatch(removeLoading());
+      navigation.navigate("OTPVerification", {
+        phone: dataForm.phone,
+        password: dataForm.password,
+        verificationId: "",
+      });
+    } catch (err) {
+      setPopup({
+        type: EPopupType.ERROR,
+        title: "Đăng ký thất bại!",
+        message: "Không thể xác thực người dùng. Hãy thử lại!",
+      });
+    }
   }
 
   return (
-    <VStack
-      backgroundColor="white"
-      flex={1}
-      safeArea
-      paddingX={6}
-      paddingTop="32"
-      justifyContent="space-between"
-      paddingBottom="8"
-    >
-      <VStack>
-        <Center marginBottom="12">
-          <Image
-            source={require("../../../assets/Logo-Primary.png")}
-            alt="Logo"
-            size="xl"
-            overflow="visible"
-          />
-        </Center>
-        <VStack justifyContent="space-between" space={3} marginBottom="8">
-          <Input size="2xl" placeholder="Họ và tên" fontSize={14} height="12" />
-          <Input size="2xl" placeholder="Điện thoại" fontSize={14} height="12" />
-          <Input size="2xl" placeholder="Mật khẩu" fontSize={14} height="12" />
-          <Input size="2xl" placeholder="Nhập lại mật khẩu" fontSize={14} height="12" />
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <VStack
+        backgroundColor="white"
+        flex={1}
+        safeArea
+        paddingX={6}
+        justifyContent="space-between"
+        paddingBottom="8"
+      >
+        {isLoading && <LoadingOverlay />}
+        <FirebaseRecaptchaVerifierModal ref={recaptchaVerifier} firebaseConfig={firebaseConfig} />
+        <VStack>
+          <Center marginBottom="12">
+            <Avatar
+              source={require("../../../assets/Logo-Primary.png")}
+              size="2xl"
+              _stack={{ overflow: "visible" }}
+            />
+          </Center>
+          <VStack justifyContent="space-between" space={3} marginBottom="8">
+            <FormInput
+              label="Điện thoại"
+              value={dataForm.phone}
+              keyboardType="phone-pad"
+              onChangeText={onInputChange("phone", setDataForm, dataForm)}
+            />
+            <FormInput
+              label="Mật khẩu"
+              value={dataForm.password}
+              onChangeText={onInputChange("password", setDataForm, dataForm)}
+              secureTextEntry
+            />
+            <FormInput
+              label="Nhập lại mật khẩu"
+              value={dataForm.repassword}
+              secureTextEntry
+              onChangeText={onInputChange("repassword", setDataForm, dataForm)}
+            />
+          </VStack>
+          <Button onPress={onSignUp}>Đăng ký</Button>
         </VStack>
-        <Button onPress={onSignUp}>Đăng ký</Button>
+        <HStack justifyContent="center" alignItems="center">
+          <Text fontSize="md">Bạn đã có tài khoản?</Text>
+          <Button variant="link" onPress={onLoginBack} size="lg">
+            Đăng nhập
+          </Button>
+        </HStack>
       </VStack>
-      <HStack justifyContent="center" alignItems="center">
-        <Text>Bạn đã có tài khoản?</Text>
-        <Button variant="link" onPress={onLoginBack}>
-          Đăng nhập
-        </Button>
-      </HStack>
-    </VStack>
+    </TouchableWithoutFeedback>
   );
 };
 

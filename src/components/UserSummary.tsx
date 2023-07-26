@@ -4,7 +4,6 @@ import { HStack, VStack, Text, useTheme } from "native-base";
 import { Location } from "iconsax-react-native";
 import { UserProfile } from "../types/user";
 import Rating from "./Rating";
-import { Image } from "expo-image";
 import Avatar from "./Avatar";
 
 type Props = {
@@ -36,7 +35,7 @@ const UserSummary = ({ user, size = "md" }: Props) => {
               numberOfLines={1}
               flex={1}
             >
-              {user.profile.location}
+              {user.profile.address}
             </Text>
           </HStack>
           <Text color="muted.500" style={[styles.text]} fontSize={size === "md" ? 14 : 15}>

@@ -1,4 +1,5 @@
-import 'react-native-gesture-handler';
+import * as firebase from "firebase/app";
+import "react-native-gesture-handler";
 import Root from "./src/navigations/Root";
 import { NativeBaseProvider } from "native-base";
 import appTheme from "./src/theme";
@@ -23,6 +24,7 @@ import { Provider } from "react-redux";
 import store from "./src/store";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import * as ImagePicker from "expo-image-picker";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -43,11 +45,13 @@ export default function App() {
     NunitoSans_900Black,
     NunitoSans_900Black_Italic,
   });
+  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   useEffect(() => {
     if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
+    requestPermission();
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {

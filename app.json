@@ -11,6 +11,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#E38383"
     },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Cho phép truy cập vào thư viện ảnh và camera"
+        }
+      ]
+    ],
     "assetBundlePatterns": [
       "**/*"
     ],

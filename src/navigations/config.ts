@@ -5,6 +5,15 @@ export type BottomTabsParams = {
 };
 
 export type AuthStackParams = {
+  OTPVerification: {
+    verificationId: string;
+    phone: string;
+    password: string;
+  };
+  FillProfile: {
+    phone: string;
+    password: string;
+  };
   PreAuth: undefined;
   Login: undefined;
   SignUp: undefined;

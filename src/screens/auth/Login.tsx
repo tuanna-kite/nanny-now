@@ -4,11 +4,11 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../navigations/config";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { setUser } from "../../store/user.reducer";
-import { Button, Center, Checkbox, HStack, Image, Input, Text, VStack } from "native-base";
+import { Button, Center, Checkbox, HStack, Image, Text, VStack } from "native-base";
 import { EUserRole } from "../../types/user";
 import { setLoading } from "../../store/loading.reducer";
-import LoadingOverlay from "../../components/LoadingOverlay";
 import { StatusBar } from "expo-status-bar";
+import FormInput from "../../components/Form/FormInput";
 
 type Props = {} & NativeStackScreenProps<AuthStackParams, "Login">;
 
@@ -21,7 +21,7 @@ const Login = ({ navigation }: Props) => {
 
   function onLoggedIn() {
     dispatch(setLoading());
-    dispatch(setUser({ role: EUserRole.Nanny }));
+    dispatch(setUser({ role: EUserRole.Nanny } as any));
   }
 
   return (
@@ -47,8 +47,8 @@ const Login = ({ navigation }: Props) => {
             />
           </Center>
           <VStack justifyContent="space-between" space={3} marginBottom="8">
-            <Input size="2xl" placeholder="Điện thoại" fontSize={14} height="12" rounded="lg" />
-            <Input size="2xl" placeholder="Mật khẩu" fontSize={14} height="12" rounded="lg" />
+            <FormInput label="Điện thoại" />
+            <FormInput label="Mật khẩu" />
             <HStack justifyContent="space-between" alignItems="center">
               <Checkbox value="save">
                 <Text color="muted.500">Ghi nhớ đăng nhập</Text>
@@ -61,8 +61,8 @@ const Login = ({ navigation }: Props) => {
           </Button>
         </VStack>
         <HStack justifyContent="center" alignItems="center">
-          <Text>Bạn chưa có tài khoản?</Text>
-          <Button variant="link" onPress={onSignUp}>
+          <Text fontSize="md">Bạn chưa có tài khoản?</Text>
+          <Button variant="link" size="lg" onPress={onSignUp}>
             Đăng ký
           </Button>
         </HStack>

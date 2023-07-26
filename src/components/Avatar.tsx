@@ -1,10 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
-import { Image, ImageProps } from "expo-image";
+import { Image, ImageProps, ImageStyle } from "expo-image";
+import { Center, IStackProps, Stack } from "native-base";
 
-type Props = { size?: "sm" | "md" | "lg" | "xl" | "2xl" } & ImageProps;
+type Props = {
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
+  rounded?: boolean;
+  _stack?: IStackProps;
+} & ImageProps;
 
-const Avatar = ({ size = "md", ...imageProps }: Props) => {
+const Avatar = ({ size = "md", style, rounded, _stack, ...imageProps }: Props) => {
   let imgSize = 0;
   if (size === "sm") {
     imgSize = 48;
@@ -18,13 +23,19 @@ const Avatar = ({ size = "md", ...imageProps }: Props) => {
     imgSize = 140;
   }
   return (
-    <Image
-      {...imageProps}
-      style={{
-        width: imgSize,
-        height: imgSize,
-      }}
-    />
+    <Center rounded={rounded ? "full" : undefined} {..._stack}>
+      <Image
+        {...imageProps}
+        style={[
+          {
+            width: imgSize,
+            height: imgSize,
+            overflow: "visible",
+          },
+          style as ImageStyle,
+        ]}
+      />
+    </Center>
   );
 };
 
