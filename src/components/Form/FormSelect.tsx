@@ -29,15 +29,15 @@ type Props = {
   label?: string;
   items?: SelectItem[];
   _stack?: IFormControlProps;
-  _select?: ISelectProps;
-};
+} & ISelectProps;
 
 const FormSelect = (props: Props) => {
+  const { label, _stack, items, ...selectProps } = props;
   return (
-    <FormControl {...props._stack}>
-      {props.label && <FormControl.Label>{props.label}</FormControl.Label>}
-      <Select {...DefaultSelectProps} placeholder="Lựa chọn" {...props._select}>
-        {props.items?.map((item) => (
+    <FormControl {..._stack}>
+      {label && <FormControl.Label>{label}</FormControl.Label>}
+      <Select {...DefaultSelectProps} placeholder="Lựa chọn" {...selectProps}>
+        {items?.map((item) => (
           <Select.Item key={item.id} label={item.label} value={item.id} />
         ))}
       </Select>

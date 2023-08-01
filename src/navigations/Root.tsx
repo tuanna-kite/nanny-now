@@ -13,6 +13,7 @@ import ManageNanny from "../screens/ManageNanny";
 import { RootStackParams } from "./config";
 import Chat from "../screens/Chat";
 import ChangePassword from "../screens/ChangePassword";
+import EditProfile from "../screens/EditProfile";
 
 const Stack = createStackNavigator<RootStackParams>();
 
@@ -51,6 +52,7 @@ const Root = () => {
           <Stack.Screen name="NannyDetail" component={NannyDetail} />
           <Stack.Screen name="ManageNanny" component={ManageNanny} />
           <Stack.Screen options={{ headerShown: false }} name="Chat" component={Chat} />
+          <Stack.Screen options={{ headerShown: false }} name="EditProfile" component={EditProfile} />
           <Stack.Screen
             name="ChangePassword"
             options={{ title: "Đổi mật khẩu", headerTruncatedBackTitle: "Test" }}

@@ -16,9 +16,7 @@ const userSlice = createSlice({
     setUser: (state, actions: PayloadAction<UserProfile<Parrent>>) => {
       // state.user = { ...actions.payload };
       state.user = {
-        phone: "0337676999",
-        profile: { fullname: "Nguyen Anh Tuan", address: "Thach Ban, Long Bien, Ha Noi", age: 25 },
-        role: EUserRole.Parent,
+        ...actions.payload,
       };
     },
     removeUser: (state) => {

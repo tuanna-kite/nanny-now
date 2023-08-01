@@ -6,16 +6,16 @@ import { extendTheme } from "native-base";
 
 export const colorTheme = {
   primary: {
-    50: "#FEF8F8",
-    100: "#FBE4E4",
-    200: "#F7CFCF",
-    300: "#F3BBBB",
-    400: "#EEA8A8",
-    500: "#E99595",
-    600: "#E38383",
-    700: "#BF6B6B",
-    800: "#9A5454",
-    900: "#753E3E",
+    50: "#F3FDFF",
+    100: "#D0F5FE",
+    200: "#B0EBF9",
+    300: "#94DFF2",
+    400: "#7AD1E7",
+    500: "#63C2D9",
+    600: "#50B0C8",
+    700: "#2E8196",
+    800: "#154D5B",
+    900: "#041418",
   },
   muted: {
     50: "#FAFAFA",

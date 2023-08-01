@@ -10,12 +10,13 @@ type Props = {
 
 const NotificationList = ({ data }: Props) => {
   const renderNotificationItem: ListRenderItem<NotificationItemProps> = useCallback(({ item, index }) => {
-    return <NotificationItem {...item} mt={index===0 && "6"} />;
+    return <NotificationItem {...item} mt={index===0 && "2"} />;
   }, []);
   return (
     <FlatList
       data={data}
       renderItem={renderNotificationItem}
+      keyExtractor={item => item.fromUser.phone}
       ItemSeparatorComponent={() => <Divider my="3" bg="muted.100" />}
     />
   );

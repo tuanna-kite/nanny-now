@@ -19,6 +19,7 @@ const FormInput = (props: Props) => {
         h="12"
         fontSize="md"
         rounded="lg"
+        _disabled={{ bg: "primary.50" }}
         {...inputProps}
       />
     </VStack>

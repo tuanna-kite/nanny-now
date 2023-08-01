@@ -1,3 +1,6 @@
+import { NavigatorScreenParams } from "@react-navigation/native";
+import { EUserRole } from "../types/user";
+
 export type BottomTabsParams = {
   Home: undefined;
   Profile: {};
@@ -10,20 +13,26 @@ export type AuthStackParams = {
     phone: string;
     password: string;
   };
-  FillProfile: {
+  EditProfile: {
     phone: string;
     password: string;
+    role: EUserRole;
   };
   PreAuth: undefined;
-  Login: undefined;
-  SignUp: undefined;
+  Login: { role: EUserRole };
+  SignUp: { role: EUserRole };
 };
 
 export type RootStackParams = {
-  Auth?: undefined;
+  Auth?: NavigatorScreenParams<AuthStackParams>;
   TabNav?: undefined;
   NannyDetail: {};
   ManageNanny: undefined;
   Chat: undefined;
+  EditProfile: {
+    phone: string;
+    password: string;
+    role: EUserRole;
+  };
   ChangePassword: {};
 };

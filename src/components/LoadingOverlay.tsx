@@ -18,6 +18,8 @@ const styles = StyleSheet.create({
   container: {
     width: Dimensions.get("screen").width,
     height: Dimensions.get("screen").height,
+    top: 0,
+    left: 0,
     position: "absolute",
     backgroundColor: "rgba(0,0,0,0.1)"
   },

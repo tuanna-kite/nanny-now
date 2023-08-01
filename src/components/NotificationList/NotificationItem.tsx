@@ -13,7 +13,7 @@ const NotificationItem = ({ fromUser, mt }: Props) => {
     <TouchableOpacity>
       <HStack space="2" mt={mt}>
         <Avatar source={require("../../../assets/Avatar.png")} />
-        <VStack flex={1} justifyContent="space-between">
+        <VStack flex="1" justifyContent="space-between">
           <Text fontSize={16} color="muted.800">
             <Text textTransform="capitalize" fontWeight="semibold" color="primary.600">
               {fromUser.profile.fullname}

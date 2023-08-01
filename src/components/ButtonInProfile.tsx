@@ -13,7 +13,7 @@ const ButtonInProfile = (props: Props) => {
       borderColor="primary.600"
       size="lg"
       rounded="lg"
-      flex={1}
+      // flex={1}
       rightIcon={<ArrowRight2 variant="Outline" color={colors.primary[600]} />}
       _stack={{ width: "100%", justifyContent: "space-between" }}
       _text={{ fontWeight: "semibold" }}

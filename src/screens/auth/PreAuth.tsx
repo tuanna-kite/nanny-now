@@ -4,12 +4,16 @@ import { Button, HStack, StatusBar, VStack, useTheme } from "native-base";
 import { ArrowRight2 } from "iconsax-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
+import { EUserRole } from "../../types/user";
 
 const PreAuth = () => {
   const { colors } = useTheme();
   const navigation = useNavigation<any>();
-  function goLogin() {
-    navigation.navigate("Login");
+  function goParentLogin() {
+    navigation.navigate("Login", { role: EUserRole.Parent });
+  }
+  function goNannyLogin() {
+    navigation.navigate("Login", { role: EUserRole.Nanny });
   }
   return (
     <>
@@ -20,14 +24,14 @@ const PreAuth = () => {
           style={{ flex: 1, justifyContent: "flex-end" }}
         >
           <HStack space={2} safeAreaBottom px="2" py="6">
-            <Button flex={1} size="lg" rounded="lg" onPress={goLogin}>
+            <Button flex={1} size="lg" rounded="lg" onPress={goParentLogin}>
               Tìm người trông trẻ
             </Button>
             <Button
               flex={1}
               variant="ghost"
               size="lg"
-              onPress={goLogin}
+              onPress={goNannyLogin}
               rightIcon={<ArrowRight2 color={colors.primary[600]} />}
             >
               Tôi là người trông trẻ

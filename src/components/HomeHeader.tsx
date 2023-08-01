@@ -4,6 +4,7 @@ import { Button, View, Text, useTheme, Stack } from "native-base";
 import { SearchNormal } from "iconsax-react-native";
 import { useAppDispatch } from "../store";
 import { showPopupFilter } from "../store/popup-filter.reducer";
+import { colorTheme } from "../theme";
 
 const Max_Header_Height = 140;
 const Min_Header_Height = 120;
@@ -22,9 +23,9 @@ const HomeHeader = ({ animHeaderValue }: any) => {
     <Animated.View
       style={{
         height: animatedHeaderHeight,
-        backgroundColor:"#E38383",
+        backgroundColor: colorTheme.primary[600],
         justifyContent: "center",
-        paddingBottom: 8
+        paddingBottom: 8,
       }}
     >
       <Stack px="5" safeAreaTop>

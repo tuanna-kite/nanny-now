@@ -3,6 +3,13 @@ export enum EUserRole {
   Nanny,
   Parent,
 }
+
+export enum EGender {
+  None = "",
+  Male = "M",
+  Female = "F",
+}
+
 export interface UserProfile<T = Nanny> {
   phone: string;
   password?: string;
@@ -25,4 +32,5 @@ export interface Parrent {
   age: number;
   avatar?: string;
   address: string;
+  gender?: EGender;
 }

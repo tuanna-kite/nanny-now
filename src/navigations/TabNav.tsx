@@ -6,7 +6,7 @@ import Notification from "../screens/main/Notification";
 import Profile from "../screens/main/Profile";
 import { useTheme } from "native-base";
 import { useSelector } from "react-redux";
-import { RootState } from "../store";
+import { RootState, useAppSelector } from "../store";
 import { EUserRole, UserProfile } from "../types/user";
 import {
   ProfileCircle,
@@ -16,15 +16,13 @@ import {
   Messages,
 } from "iconsax-react-native";
 import Messenger from "../screens/main/Messenger";
-import NannyDetail from "../screens/NannyDetail";
-import Chat from "../screens/Chat";
 // import { BottomTabsParams } from "./types";
 
 const Tab = createBottomTabNavigator();
 
 const TabNav = () => {
   const { colors } = useTheme();
-  const user = useSelector<RootState, UserProfile>((state) => state.user.user!);
+  const user = useAppSelector((state) => state.user.user!);
 
   return (
     <Tab.Navigator
@@ -39,7 +37,7 @@ const TabNav = () => {
         component={Home}
         options={{
           tabBarIcon: ({ color, size }) =>
-            user?.role === EUserRole.Nanny ? (
+            user?.role === EUserRole.Parent ? (
               <SearchNormal size={size} color={color} />
             ) : (
               <Speedometer size={size} color={color} />

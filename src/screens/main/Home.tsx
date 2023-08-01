@@ -33,7 +33,7 @@ const Home = () => {
           bounces={false}
         >
           <VStack flex={1} backgroundColor="white" space="8">
-            <Stack space="6" bg="primary.600" pb="6">
+            <Stack space="6" bg="primary.600">
               <VStack space="4" mb="6">
                 <HStack justifyContent="space-between" alignItems="center" px="5">
                   <Text fontSize="2xl" fontWeight="600" color="white">

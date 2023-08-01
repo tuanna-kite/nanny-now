@@ -1,13 +1,13 @@
 import React from "react";
-import { AlertDialog, Button, Center, Text, VStack } from "native-base";
+import { AlertDialog, Button, Center, Text } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { removePopup } from "../store/popup.reducer";
 import { EPopupType } from "../types/popup";
 import Avatar from "./Avatar";
 
-const errorImage = require("../../assets/ErrorImage.png");
-const successImage = require("../../assets/SuccessImage.png");
+const errorImage = require("../../assets/Error.png");
+const successImage = require("../../assets/Info.png");
 
 const PopupOverlay = () => {
   const { popup } = useSelector((state: RootState) => state.popup);

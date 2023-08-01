@@ -23,7 +23,11 @@ const Avatar = ({ size = "md", style, rounded, _stack, ...imageProps }: Props) =
     imgSize = 140;
   }
   return (
-    <Center rounded={rounded ? "full" : undefined} {..._stack}>
+    <Center
+      rounded={rounded ? "full" : undefined}
+      overflow={rounded ? "hidden" : "visible"}
+      {..._stack}
+    >
       <Image
         {...imageProps}
         style={[
