@@ -1,17 +1,16 @@
 import { Keyboard, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import React, { useEffect, useState } from "react";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams, RootStackParams } from "../navigations/config";
 import { useAppDispatch, useAppSelector } from "../store";
 import { Button, Center, VStack, Stack, Heading, HStack, Icon } from "native-base";
 import Avatar from "../components/Avatar";
 import * as ImagePicker from "expo-image-picker";
 import { firebaseDB, firebaseStorage } from "../firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import uuid from "react-native-uuid";
 import { removeLoading, setLoading } from "../store/loading.reducer";
 import { EGender, EUserRole, Parrent, UserProfile } from "../types/user";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { setPopup } from "../store/popup.reducer";
 import { EPopupType } from "../types/popup";
 import { fillProfileSchema, onInputChange } from "../utils/form-utils";
@@ -41,14 +40,16 @@ type ProfileForm = {
 
 const EditProfile = ({ navigation, route }: Props) => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
+  const editMode = !!user;
   const { isLoading } = useAppSelector((state) => state.loading);
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null>(editMode ? user.profile.avatar : null);
   const [formData, setFormData] = useState<ProfileForm>({
-    fullname: "",
-    address: "",
-    age: "",
-    avatar: "",
-    gender: EGender.None,
+    fullname: editMode ? user.profile.fullname : "",
+    address: editMode ? user.profile.address : "",
+    age: editMode ? String(user.profile.age) : "",
+    avatar: editMode ? user.profile.avatar : "",
+    gender: editMode ? user.profile.gender : EGender.None,
   });
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
@@ -86,49 +87,64 @@ const EditProfile = ({ navigation, route }: Props) => {
       xhr.open("GET", uri, true);
       xhr.send(null);
     });
-    const fileRef = ref(firebaseStorage, uuid.v4() as string);
+    const avatarName = uuid.v4() as string;
+    const fileRef = ref(firebaseStorage, avatarName);
     await uploadBytes(fileRef, blob);
 
     // We're done with the blob, close and release it
     blob.close();
 
-    return await getDownloadURL(fileRef);
+    const avatarUrl = await getDownloadURL(fileRef);
+    return { avatarName, avatarUrl };
   }
 
   function onGoBack() {
-    navigation.navigate("SignUp", { role: route.params.role });
+    if (editMode) {
+      navigation.goBack();
+    } else {
+      navigation.navigate("SignUp", { role: route.params.role });
+    }
   }
 
-  async function onFillProfile() {
+  async function onSubmit() {
     try {
       dispatch(setLoading());
       await fillProfileSchema.validate({
         ...formData,
         age: formData.age.length ? Number(formData.age) : 0,
       });
-      const avtURL = await uploadImage(image!);
-
+      const { avatarName, avatarUrl } = await uploadImage(image!);
       const parrentProfile: UserProfile<Parrent> = {
-        phone: route.params.phone,
-        password: route.params.password,
+        phone: editMode ? user.phone : route.params.phone,
+        password: editMode ? user.password : route.params.password,
         profile: {
           address: formData.address,
           age: formData.age.length ? Number(formData.age) : 0,
           fullname: formData.fullname,
-          avatar: avtURL,
+          avatar: avatarUrl,
+          avatarName,
           gender: formData.gender,
         },
         role: EUserRole.Parent,
       };
-
-      await setDoc(doc(firebaseDB, "users", parrentProfile.phone), parrentProfile);
+      if (editMode) {
+        delete parrentProfile.password;
+        const oldAvtName = user?.profile.avatarName;
+        await deleteObject(ref(firebaseStorage, oldAvtName));
+        await updateDoc(doc(firebaseDB, "users", parrentProfile.phone), parrentProfile as any);
+        navigation.goBack();
+      } else {
+        await setDoc(doc(firebaseDB, "users", parrentProfile.phone), parrentProfile);
+      }
       dispatch(setUser(parrentProfile));
+      dispatch(removeLoading());
     } catch (err: any) {
+      console.log(err);
       dispatch(removeLoading());
       dispatch(
         setPopup({
           type: EPopupType.ERROR,
-          title: "Đăng ký thất bại",
+          title: editMode ? "Cập nhật thất bại" : "Đăng ký thất bại",
           message: err.message,
         })
       );
@@ -140,7 +156,7 @@ const EditProfile = ({ navigation, route }: Props) => {
       {isLoading && <LoadingOverlay />}
       <StatusBar style="light" />
       <HStack bg="primary.600" safeAreaTop justifyContent="space-between" alignItems="center">
-        <TouchableOpacity onPress={onGoBack} style={{ width: 30, alignItems: "center" }}>
+        <TouchableOpacity onPress={onGoBack} style={{ width: 40, alignItems: "center" }}>
           <Icon as={Entypo} name="chevron-left" size="lg" color="white" />
         </TouchableOpacity>
         <Heading pt="2" pb="3" color="white" fontSize="lg">
@@ -174,10 +190,12 @@ const EditProfile = ({ navigation, route }: Props) => {
             <VStack justifyContent="space-between" space={3} marginBottom="8">
               <FormInput
                 label="Họ và tên"
+                value={formData.fullname}
                 onChangeText={onInputChange<ProfileForm>("fullname", setFormData, formData)}
               />
               <FormInput
                 label="Tuổi"
+                value={formData.age}
                 onChangeText={onInputChange<ProfileForm>("age", setFormData, formData)}
               />
               <GenderSelect
@@ -185,11 +203,12 @@ const EditProfile = ({ navigation, route }: Props) => {
                 onValueChange={onInputChange<ProfileForm>("gender", setFormData, formData)}
               />
               <FormInput
+                value={formData.address}
                 label="Địa chỉ"
                 onChangeText={onInputChange<ProfileForm>("address", setFormData, formData)}
               />
             </VStack>
-            <Button onPress={onFillProfile}>Đăng ký</Button>
+            <Button onPress={onSubmit}>{editMode ? "Cập nhật" : "Đăng ký"}</Button>
           </VStack>
         </TouchableWithoutFeedback>
       </KeyboardAwareScrollView>

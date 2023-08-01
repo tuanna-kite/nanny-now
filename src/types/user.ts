@@ -30,7 +30,8 @@ export interface Nanny {
 export interface Parrent {
   fullname: string;
   age: number;
-  avatar?: string;
+  avatar: string;
+  avatarName: string;
   address: string;
-  gender?: EGender;
+  gender: EGender;
 }

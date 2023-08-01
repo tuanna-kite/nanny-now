@@ -1,14 +1,11 @@
 import { Keyboard, StyleSheet, TouchableWithoutFeedback } from "react-native";
-import React, { useState } from "react";
-import { Button, HStack, Heading, Text, VStack } from "native-base";
+import React from "react";
+import { Button, Heading, Text, VStack } from "native-base";
 import { removeUser } from "../../store/user.reducer";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { useNavigation } from "@react-navigation/native";
 import Avatar from "../../components/Avatar";
-import FormInput from "../../components/Form/FormInput";
 import ButtonInProfile from "../../components/ButtonInProfile";
-import GenderSelect from "../../components/Form/GenderSelect";
-import { removeLoading, setLoading } from "../../store/loading.reducer";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -35,8 +32,6 @@ const Profile = () => {
               }}
               rounded
               size="2xl"
-              onLoadStart={() => dispatch(setLoading())}
-              onLoadEnd={() => dispatch(removeLoading())}
             />
           </VStack>
           <VStack alignItems="center" space="2" mt={12}>
@@ -45,13 +40,7 @@ const Profile = () => {
               {user?.phone}
             </Text>
           </VStack>
-          {/* <VStack space="2" my="4" px="6">
-            <FormInput label="Số điện thoại" value={user?.phone} isDisabled />
-            <FormInput label="Họ và tên" value={user?.profile.fullname} isDisabled={!editMode} />
-            <FormInput label="Tuổi" value={String(user?.profile.age)} isDisabled={!editMode} />
-            <FormInput label="Địa chỉ" value={user?.profile.address} isDisabled={!editMode} />
-            <GenderSelect selectedValue={user?.profile.gender} isDisabled={!editMode} />
-          </VStack> */}
+
           <VStack space="4" px="6" mt="12" mb="6">
             <ButtonInProfile onPress={() => navigation.navigate("EditProfile")}>
               Chỉnh sửa thông tin
