@@ -18,12 +18,14 @@ import LoadingOverlay from "../components/LoadingOverlay";
 import { setUser } from "../store/user.reducer";
 import { Camera } from "iconsax-react-native";
 import FormInput from "../components/Form/FormInput";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Entypo } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import GenderSelect from "../components/Form/GenderSelect";
 import { StackScreenProps } from "@react-navigation/stack";
 import { CompositeScreenProps } from "@react-navigation/native";
+import FormSelect from "../components/Form/FormSelect";
+import { ADDRESS_TREE } from "../data/address";
+import AddressSelect from "../components/Form/AddressSelect";
 
 type Props = CompositeScreenProps<
   StackScreenProps<RootStackParams, "EditProfile">,
@@ -32,7 +34,8 @@ type Props = CompositeScreenProps<
 
 type ProfileForm = {
   fullname: string;
-  address: string;
+  district: keyof typeof ADDRESS_TREE;
+  ward: string;
   age: string;
   avatar: string;
   gender: EGender;
@@ -46,7 +49,8 @@ const EditProfile = ({ navigation, route }: Props) => {
   const [image, setImage] = useState<string | null>(editMode ? user.profile.avatar : null);
   const [formData, setFormData] = useState<ProfileForm>({
     fullname: editMode ? user.profile.fullname : "",
-    address: editMode ? user.profile.address : "",
+    district: editMode ? user.profile.district : "001",
+    ward: editMode ? user.profile.ward : "0001",
     age: editMode ? String(user.profile.age) : "",
     avatar: editMode ? user.profile.avatar : "",
     gender: editMode ? user.profile.gender : EGender.None,
@@ -56,6 +60,10 @@ const EditProfile = ({ navigation, route }: Props) => {
   useEffect(() => {
     if (!status || !status.granted) requestPermission();
   }, []);
+
+  useEffect(() => {
+    setFormData({ ...formData, ward: "" });
+  }, [formData.district, setFormData]);
 
   // TODO: Set back action to navigate SignUp
   const pickImage = async () => {
@@ -118,7 +126,8 @@ const EditProfile = ({ navigation, route }: Props) => {
         phone: editMode ? user.phone : route.params.phone,
         password: editMode ? user.password : route.params.password,
         profile: {
-          address: formData.address,
+          district: formData.district,
+          ward: formData.ward,
           age: formData.age.length ? Number(formData.age) : 0,
           fullname: formData.fullname,
           avatar: avatarUrl,
@@ -139,7 +148,6 @@ const EditProfile = ({ navigation, route }: Props) => {
       dispatch(setUser(parrentProfile));
       dispatch(removeLoading());
     } catch (err: any) {
-      console.log(err);
       dispatch(removeLoading());
       dispatch(
         setPopup({
@@ -164,59 +172,58 @@ const EditProfile = ({ navigation, route }: Props) => {
         </Heading>
         <Stack style={{ width: 30 }} />
       </HStack>
-      <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: "white" }}>
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-          <VStack flex={1} bg="white" paddingX={6}>
-            <Center marginBottom="6" mt="8">
-              <VStack space="3">
-                {!image && (
-                  <Center bg="muted.100" style={styles.avtHolder}>
-                    <Camera size={32} color="#525252" />
-                  </Center>
-                )}
-                {!!image && (
-                  <Avatar
-                    rounded
-                    source={{ uri: image }}
-                    size="2xl"
-                    style={{ overflow: "visible" }}
-                  />
-                )}
-                <Button onPress={pickImage} variant="ghost">
-                  Upload Avatar
-                </Button>
-              </VStack>
-            </Center>
-            <VStack justifyContent="space-between" space={3} marginBottom="8">
-              <FormInput
-                label="Họ và tên"
-                value={formData.fullname}
-                onChangeText={onInputChange<ProfileForm>("fullname", setFormData, formData)}
-              />
-              <FormInput
-                label="Tuổi"
-                value={formData.age}
-                onChangeText={onInputChange<ProfileForm>("age", setFormData, formData)}
-              />
-              <GenderSelect
-                selectedValue={formData.gender}
-                onValueChange={onInputChange<ProfileForm>("gender", setFormData, formData)}
-              />
-              <FormInput
-                value={formData.address}
-                label="Địa chỉ"
-                onChangeText={onInputChange<ProfileForm>("address", setFormData, formData)}
-              />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <VStack flex={1} bg="white" paddingX={6}>
+          <Center marginBottom="6" mt="8">
+            <VStack space="3">
+              {!image && (
+                <Center bg="muted.100" style={styles.avtHolder}>
+                  <Camera size={32} color="#525252" />
+                </Center>
+              )}
+              {!!image && (
+                <Avatar
+                  rounded
+                  source={{ uri: image }}
+                  size="2xl"
+                  style={{ overflow: "visible" }}
+                />
+              )}
+              <Button onPress={pickImage} variant="ghost">
+                Upload Avatar
+              </Button>
             </VStack>
-            <Button onPress={onSubmit}>{editMode ? "Cập nhật" : "Đăng ký"}</Button>
+          </Center>
+          <VStack justifyContent="space-between" space={3} marginBottom="8">
+            <FormInput
+              label="Họ và tên"
+              value={formData.fullname}
+              onChangeText={onInputChange<ProfileForm>("fullname", setFormData, formData)}
+            />
+            <FormInput
+              label="Tuổi"
+              value={formData.age}
+              onChangeText={onInputChange<ProfileForm>("age", setFormData, formData)}
+            />
+            <GenderSelect
+              selectedValue={formData.gender}
+              onValueChange={onInputChange<ProfileForm>("gender", setFormData, formData)}
+            />
+            <AddressSelect
+              district={formData.district}
+              setDistrict={onInputChange<ProfileForm>("district", setFormData, formData)}
+              ward={formData.ward}
+              setWard={onInputChange<ProfileForm>("ward", setFormData, formData)}
+            />
           </VStack>
-        </TouchableWithoutFeedback>
-      </KeyboardAwareScrollView>
+          <Button onPress={onSubmit}>{editMode ? "Cập nhật" : "Đăng ký"}</Button>
+        </VStack>
+      </TouchableWithoutFeedback>
     </>
   );
 };
 
-export default EditProfile;
+export default React.memo(EditProfile);
 
 const styles = StyleSheet.create({
   avtHolder: { width: 140, height: 140, borderRadius: 70 },

@@ -12,12 +12,11 @@ export const signUpSchema = object({
   repassword: string().min(8, "Mật khẩu phải tối thiểu 8 ký tự").required(),
 });
 
-
-
 export const fillProfileSchema = object({
   fullname: string().required("Bạn phải điền đầy đủ tên"),
   age: number().min(18, "Bạn chưa đủ tuổi đăng ký ứng dụng").required("Tuổi không hợp lệ"),
-  address: string().min(8, "Địa chỉ không hợp lệ").required(),
+  district: string().min(1, "Quận không hợp lệ").required(),
+  ward: string().min(1, "Phường không hợp lệ").required(),
 });
 
 export function onInputChange<FieldType>(

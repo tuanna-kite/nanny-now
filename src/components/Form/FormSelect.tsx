@@ -33,6 +33,7 @@ type Props = {
 
 const FormSelect = (props: Props) => {
   const { label, _stack, items, ...selectProps } = props;
+
   return (
     <FormControl {..._stack}>
       {label && <FormControl.Label>{label}</FormControl.Label>}
@@ -45,6 +46,6 @@ const FormSelect = (props: Props) => {
   );
 };
 
-export default FormSelect;
+export default React.memo(FormSelect);
 
 const styles = StyleSheet.create({});

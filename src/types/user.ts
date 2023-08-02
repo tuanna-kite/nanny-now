@@ -1,3 +1,5 @@
+import { ADDRESS_TREE } from "../data/address";
+
 export enum EUserRole {
   None,
   Nanny,
@@ -19,7 +21,8 @@ export interface UserProfile<T = Nanny> {
 
 export interface Nanny {
   fullname: string;
-  address: string;
+  district:  keyof typeof ADDRESS_TREE;
+  ward: string;
   experience: string;
   description: string;
   rate?: number;
@@ -32,6 +35,7 @@ export interface Parrent {
   age: number;
   avatar: string;
   avatarName: string;
-  address: string;
+  district:  keyof typeof ADDRESS_TREE;
+  ward: string;
   gender: EGender;
 }
