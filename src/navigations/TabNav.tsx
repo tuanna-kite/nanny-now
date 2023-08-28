@@ -5,9 +5,8 @@ import Home from "../screens/main/Home";
 import Notification from "../screens/main/Notification";
 import Profile from "../screens/main/Profile";
 import { useTheme } from "native-base";
-import { useSelector } from "react-redux";
-import { RootState, useAppSelector } from "../store";
-import { EUserRole, UserProfile } from "../types/user";
+import { useAppSelector } from "../store";
+import { EUserRole } from "../types/user";
 import {
   ProfileCircle,
   SearchNormal,
@@ -16,7 +15,6 @@ import {
   Messages,
 } from "iconsax-react-native";
 import Messenger from "../screens/main/Messenger";
-// import { BottomTabsParams } from "./types";
 
 const Tab = createBottomTabNavigator();
 
