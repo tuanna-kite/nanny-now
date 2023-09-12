@@ -1,22 +1,8 @@
 import { StyleSheet } from "react-native";
 import React, { useState } from "react";
-import {
-  Button,
-  CheckIcon,
-  Checkbox,
-  FormControl,
-  HStack,
-  ISelectProps,
-  Input,
-  Modal,
-  Select,
-  Text,
-  VStack,
-} from "native-base";
-import { ArrowDown2 } from "iconsax-react-native";
+import { Button, FormControl, HStack, Input, Modal, VStack } from "native-base";
 import { useAppDispatch, useAppSelector } from "../store";
 import { hidePopupFilter } from "../store/popup-filter.reducer";
-import { colorTheme } from "../theme";
 import FormSelect from "./Form/FormSelect";
 import FormCheckBoxes from "./Form/FormCheckBoxes";
 
